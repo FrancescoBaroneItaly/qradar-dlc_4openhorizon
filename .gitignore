@@ -1,0 +1,6 @@
+.idea/
+dlc/build/
+.dlc-service.rpm
+kafka.env
+tls.env
+udp.env

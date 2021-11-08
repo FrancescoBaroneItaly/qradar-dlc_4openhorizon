@@ -1,0 +1,13 @@
+#FB IEAM DLC DOCKER IMAGE
+version: "3.8"
+
+services:
+    qradar-logrun:
+        container_name: logrun-docker
+        build: logrun/.
+        
+    qradar-dlc-udp:
+        container_name: dlc-docker-udp
+        build: dlc/.
+        cap_add:
+            - SYS_NICE

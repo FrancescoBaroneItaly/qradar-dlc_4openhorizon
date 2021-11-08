@@ -1,0 +1,30 @@
+{
+    "org": "$HZN_ORG_ID",
+    "label": "$SERVICE_NAME for $ARCH",
+    "description": "",
+    "public": true,
+    "documentation": "",
+    "url": "$SERVICE_NAME",
+    "version": "$SERVICE_VERSION",
+    "arch": "$ARCH",
+    "sharable": "multiple",
+    "requiredServices": [],
+    "userInput": [
+        {
+            "name": "",
+            "label": "",
+            "type": "",
+            "defaultValue": ""
+        }
+    ],
+    "deployment": {
+        "services": {
+            "qradar-logrun": {
+                "image": "${DOCKER_IMAGE_BASE}_$ARCH:$SERVICE_VERSION",
+                "privileged": false,
+                "network": "",
+				"binds": ["/server/app/qradar-dlc/data/sample:/event:rw"]
+            }
+        }
+    }
+}

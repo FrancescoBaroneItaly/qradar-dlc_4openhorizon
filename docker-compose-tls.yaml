@@ -1,0 +1,35 @@
+# Set up a file called .env in this directory and create entries for any variables in this file
+# eg: inventory_api_path=/path/to/my/inventory/service/project
+version: '3.8'
+
+services:
+  logrun:
+    image: "docker-dev.secintel.intranet.ibm.com/ibm-si-logrun:${LOGRUN_TAG}"
+    container_name: logrun-docker
+    volumes:
+      - ${LOCAL_LOGRUN_MOUNT_DIR}/sample:/event:z
+
+  simple-ca:
+    image: "quay.io/jcmoraisjr/simple-ca:0.8"
+    container_name: simple-ca
+
+  dlc-tls:
+    image: "docker-dev.secintel.intranet.ibm.com/ibm-si-dlc:${DLC_TAG}"
+    env_file:
+      ./tls.env
+    ports:
+      - "1514:1514/udp"
+      - "1514:1514/tcp"
+    depends_on:
+      - "simple-ca"
+    container_name: dlc-docker-tls
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - ${LOCAL_DLC_MOUNT_DIR}/persistent_queue:/store/persistent_queue
+      - ${LOCAL_DLC_MOUNT_DIR}/logSources.json:/opt/ibm/si/services/dlc/conf/logSources.json:z
+      - ${LOCAL_DLC_MOUNT_DIR}/ssl:/etc/dlc/ssl:Z
+    cap_add:
+      - SYS_NICE
+    tmpfs:
+      - /run
+      - /tmp

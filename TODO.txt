@@ -1,0 +1,34 @@
+#CR
+export REGISTRY_NAMESPACE=ibm-edgelab
+export CLOUD_API_KEY=xxxxx
+
+#HZN ENV
+eval export $(cat /server/edge/agent/agent-install.cfg)
+export ARCH=$(hzn architecture)
+
+#IMAGE
+export BASE_IMAGE_NAME=qradar-dlc
+
+#CREATE SERVICE
+hzn dev service new -s $BASE_IMAGE_NAME -V 1.0.0 -i us.icr.io/$REGISTRY_NAMESPACE/$BASE_IMAGE_NAME --noImageGen
+
+eval $(hzn util configconv -f horizon/hzn.json)
+
+#!!!!
+#apt  install docker-compose
+
+#BUILD
+docker-compose -f ieam-docker-compose-udp.yaml up -d --build
+
+#TEST LOCAL
+unset DOCKER_IMAGE_BASE SERVICE_NAME SERVICE_VERSION
+hzn dev service start -S -v
+
+hzn dev service stop
+
+#TAG IMAGE
+#!!!!!!
+docker image tag dlc-docker-master_qradar-dlc-udp us.icr.io/ibm-edgelab/qradar-dlc_amd64:1.0.0
+
+#PUBLISH
+hzn exchange service publish -f horizon/service.definition.json

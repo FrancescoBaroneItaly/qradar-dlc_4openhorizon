@@ -1,0 +1,19 @@
+# Wed Oct 06 10:27:43 UTC 2021
+# Replay feature output
+# ---------------------
+# This file was built by the Replay feature of InstallAnywhere.
+# It contains variables that were set by Panels, Consoles or Custom Code.
+
+
+
+#Indicate whether the license agreement been accepted
+#----------------------------------------------------
+LICENSE_ACCEPTED=TRUE
+
+#Choose Install Folder
+#---------------------
+USER_INSTALL_DIR=/opt/ibm/java-x86_64-80
+
+#Install
+#-------
+-fileOverwrite_/opt/ibm/java-x86_64-80/_uninstall/uninstall.lax=Yes
