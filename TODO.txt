@@ -1,24 +1,31 @@
+export HZN_ORG_ID=birex-sandbox
+export HZN_EXCHANGE_USER_AUTH=iamapikey:xxxx
+
 #CR
 export REGISTRY_NAMESPACE=ibm-edgelab
-export CLOUD_API_KEY=xxxxx
+export CLOUD_API_KEY=xxxx
+
+#WA no ibmcloud cmd line
+export ENTITLED_REGISTRY=us.icr.io
+export ENTITLED_REGISTRY_USER=iamapikey
+export ENTITLED_REGISTRY_KEY=xxxxxx
+docker login "$ENTITLED_REGISTRY" -u "$ENTITLED_REGISTRY_USER" -p "$ENTITLED_REGISTRY_KEY"
 
 #HZN ENV
 eval export $(cat /server/edge/agent/agent-install.cfg)
 export ARCH=$(hzn architecture)
 
 #IMAGE
-export BASE_IMAGE_NAME=qradar-dlc
+export BASE_IMAGE_NAME=qradar-4gsc-udp
 
 #CREATE SERVICE
 hzn dev service new -s $BASE_IMAGE_NAME -V 1.0.0 -i us.icr.io/$REGISTRY_NAMESPACE/$BASE_IMAGE_NAME --noImageGen
 
 eval $(hzn util configconv -f horizon/hzn.json)
 
-#!!!!
-#apt  install docker-compose
-
 #BUILD
-docker-compose -f ieam-docker-compose-udp.yaml up --no-start -d --build
+docker-compose -f ieam-docker-compose-udp.yaml up -d --build
+docker-compose -f ieam-docker-compose-udp.yaml up --no-start --build
 
 #TEST LOCAL
 unset DOCKER_IMAGE_BASE SERVICE_NAME SERVICE_VERSION
@@ -29,6 +36,7 @@ hzn dev service stop
 #TAG IMAGE
 #!!!!!!
 docker image tag dlc-docker-master_qradar-dlc-udp us.icr.io/ibm-edgelab/qradar-dlc_amd64:1.0.0
+docker image tag dlc-docker-master_qradar-dlc-udp us.icr.io/ibm-edgelab/qradar-dlc_amd64:2.0.0
 
 #PUBLISH
-hzn exchange service publish -f horizon/service.definition.json
+hzn exchange service publish -r "us.icr.io:iamapikey:$CLOUD_API_KEY" -f horizon/service.definition.json
