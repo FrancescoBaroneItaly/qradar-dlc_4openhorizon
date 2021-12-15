@@ -18,7 +18,7 @@ eval $(hzn util configconv -f horizon/hzn.json)
 #apt  install docker-compose
 
 #BUILD
-docker-compose -f ieam-docker-compose-udp.yaml up -d --build
+docker-compose -f ieam-docker-compose-udp.yaml up --no-start -d --build
 
 #TEST LOCAL
 unset DOCKER_IMAGE_BASE SERVICE_NAME SERVICE_VERSION

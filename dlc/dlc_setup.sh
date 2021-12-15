@@ -95,6 +95,10 @@ InitLog ${logDir}/$(basename ${0} .sh).log || \
 
 LogMessage "Starting: ${0} ${@}"
 
+#FB wait config from MMS
+RunAndLog /root/dlc_ieam.sh
+RunAndLog /root/dlc_ieam_trigger_mms.sh
+
 if [[ -z "${__dlc_opts[dlcMode]}" ]]; then
     ErrorMessage "Please specify the proper dlc mode!"
     Usage

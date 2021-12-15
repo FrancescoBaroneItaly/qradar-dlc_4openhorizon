@@ -5,11 +5,11 @@ services:
     qradar-logrun:
         container_name: logrun-docker
         build: logrun/.
-        image: "${DOCKER_IMAGE_BASE}-logrun_$ARCH:$SERVICE_VERSION"
+        image: "${DOCKER_IMAGE_BASE}_$ARCH:$SERVICE_VERSION"
         
     qradar-dlc-udp:
         container_name: dlc-docker-udp
         build: dlc/.
-        image: "${DOCKER_IMAGE_BASE}-dlc_$ARCH:$SERVICE_VERSION"
+        image: "${DOCKER_IMAGE_BASE}_$ARCH:$SERVICE_VERSION"
         cap_add:
             - SYS_NICE

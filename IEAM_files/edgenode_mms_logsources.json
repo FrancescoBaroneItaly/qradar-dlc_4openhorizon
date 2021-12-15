@@ -1,0 +1,23 @@
+{
+  "objectID": "b003vm2-1.qradar-4gsc-udp-dlc-deployment",
+  "objectType": "logsources.json",
+  "destinationOrgID": "birex-sandbox",
+  "destinationPolicy": {
+    "properties": [],
+    "constraints": [
+        "qradar-4gsc-udp-dlc-deployment == b003vm2-1"
+        ],
+    "services": [
+      {
+        "orgID": "cp4m-sandbox",
+        "arch": "amd64",
+        "serviceName": "qradar-4gsc-udp-dlc",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "version": "2",
+  "description": "logsources config file",
+  "expiration": "",
+  "activationTime": ""
+}

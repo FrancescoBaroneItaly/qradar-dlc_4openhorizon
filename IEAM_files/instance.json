@@ -1,0 +1,6 @@
+{
+	"version": "1.0",
+	"uuid": "aabbccdd-a343-4129-8574-d3052f135b63",
+	"endpoint_udp": "192.168.64.28",
+	"port_udp": "32500"
+}

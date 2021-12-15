@@ -1,9 +1,8 @@
 {
-    "HZN_ORG_ID": "birex-sandbox",
-    "HZN_PRIVILEGED": "true",
+    "HZN_ORG_ID": "cp4m-sandbox",
     "MetadataVars": {
-        "DOCKER_IMAGE_BASE": "us.icr.io/ibm-edgelab/qradar-dlc",
-        "SERVICE_NAME": "qradar-dlc",
+        "DOCKER_IMAGE_BASE": "us.icr.io/ibm-edgelab/qradar-4gsc-udp",
+        "SERVICE_NAME": "qradar-4gsc-udp-dlc",
         "SERVICE_VERSION": "1.0.0"
     }
 }

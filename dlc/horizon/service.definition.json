@@ -11,29 +11,40 @@
     "requiredServices": [],
     "userInput": [
         {
-            "name": "",
-            "label": "",
-            "type": "",
-            "defaultValue": ""
+        "name": "SERVICE_TYPE",
+        "label": "Define the type of service",
+        "type": "string",
+        "defaultValue": "qradar-dlc-udp-gsc"
+        },
+        {
+        "name": "SERVICE_NAME",
+        "label": "Service Name required during deployment",
+        "type": "string",
+        "defaultValue": "$SERVICE_NAME"
         }
     ],
     "deployment": {
         "services": {
-            "qradar-dlc": {
+            "qradar-dlc-udp-gsc": {
                 "image": "${DOCKER_IMAGE_BASE}_$ARCH:$SERVICE_VERSION",
-                "privileged": false,
+                "privileged": true,
                 "ports": [
                     {
                         "HostPort": "1514:1514/tcp",
                         "HostIP": "0.0.0.0"
                     },
-					{
+                                        {
                         "HostPort": "1514:1514/udp",
                         "HostIP": "0.0.0.0"
                     }
                     ],
-				"binds": ["/server/app/qradar-dlc/data/persistent_queue:/store/persistent_queue:rw"]
+                "binds": [
+                        "/server/app/qradar-dlc/data/persistent_queue:/store/persistent_queue:rw",
+                        "/server/app/qradar-dlc/data/logSources.json:/opt/ibm/si/services/dlc/conf/logSources.json:z",
+                        "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+                        ]
             }
         }
     }
 }
+

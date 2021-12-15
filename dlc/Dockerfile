@@ -11,7 +11,7 @@ COPY java_response.file /tmp/java_response.file
 RUN chmod +x /tmp/ibm-java-x86_64-sdk-8.0-6.36.bin && \
 	/tmp/ibm-java-x86_64-sdk-8.0-6.36.bin -f /tmp/java_response.file -i silent
 
-LABEL maintainer="Marhall Yang <marshall.yang@ibm.com>"
+LABEL maintainer="Francesco <francesco_barone@it.ibm.com>"
 
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in ; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done);
 
@@ -46,8 +46,17 @@ ENV DLC_DESTINATION_MODE=${DLC_MODE} DLC_DESTINATION_IP=${DLC_DEST_IP} DLC_DESTI
 COPY dlc_setup.sh /root/dlc_setup.sh
 COPY dlc_config.sh /root/dlc_config.sh
 COPY logSources.json /root/logSources.json
+RUN rm -rf /opt/ibm/si/services/dlc/conf/logSources.json
+RUN touch /opt/ibm/si/services/dlc/conf/logSources.json
+#IEAM Integration
+COPY dlc_ieam.sh /root/dlc_ieam.sh
 EXPOSE 1514/tcp
 EXPOSE 1514/udp
 VOLUME /store/persistent_queue
 RUN chmod +x /root/dlc_setup.sh /root/dlc_config.sh
+#IEAM Integration
+RUN chmod +x /root/dlc_ieam.sh
+#IEAM Integration
+COPY dlc_ieam_trigger_mms.sh /root/dlc_ieam_trigger_mms.sh
+RUN chmod +x /root/dlc_ieam_trigger_mms.sh
 CMD /root/dlc_setup.sh -m ${DLC_DESTINATION_MODE} -i ${DLC_DESTINATION_IP} -p ${DLC_DESTINATION_PORT} && "/sbin/init"
