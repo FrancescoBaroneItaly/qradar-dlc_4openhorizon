@@ -20,20 +20,11 @@ BASEURL="https://localhost/api/v1/objects"
 DEBUG=1
 
 echo "Initial setup DLC - IEAM"
+sleep 15
 
 INSTANCE="/dlcInstance/instance.json"
 
-if [[ $DEBUG == 1 ]]; then echo "DEBUG: CHECK ${INSTANCE}"; fi
-if [ -e ${INSTANCE} ]; then
-
-	if [[ $DEBUG == 1 ]]; then echo "DEBUG: INSTANCE ALREADY CONFIGURED"; fi
-	exit 0;
-	fi
-
-if [[ $DEBUG == 1 ]]; then echo "DEBUG: GENERATE UUID"; fi
-
 RC=-1
-
 while (($RC != 0)); do
 
 	# See if there is a new version of the config.json file
@@ -88,27 +79,7 @@ while (($RC != 0)); do
 		if [[ $DEBUG == 1 ]]; then echo "DEBUG: RECEIVED INSTANCE.JSON"; fi
 
 		cp $OBJECT_TYPE $INSTANCE
-		UUID=$(cat $INSTANCE | jq -r ".uuid")
-		if [[ $UUID != null ]]; then
-
-			if [[ $DEBUG == 1 ]]; then echo "DEBUG: SET UUID=${UUID}"; fi
-
-			rm -f /etc/dlc/instance/*
-			touch /etc/dlc/instance/${UUID}
-		fi
-
-		_DLC_DESTINATION_IP=$(cat $INSTANCE | jq -r ".endpoint_udp")
-		_DLC_DESTINATION_PORT=$(cat $INSTANCE | jq -r ".port_udp")
-		if [[ $_DLC_DESTINATION_IP != null && $_DLC_DESTINATION_PORT != null ]]; then
-
-			if [[ $DEBUG == 1 ]]; then echo "DEBUG: SET UDO ENDPOINT TO ${_DLC_DESTINATION_IP}:${_DLC_DESTINATION_PORT}"; fi
-
-			export DLC_DESTINATION_IP=$_DLC_DESTINATION_IP
-			export DLC_DESTINATION_PORT=$DLC_DESTINATION_PORT
-		fi
-
 		RC=0
-		if [[ $DEBUG == 1 ]]; then echo "DEBUG: CONFIG COMPLETED"; fi
 
 	fi
 
@@ -119,3 +90,5 @@ done
 touch /tmp/configured
 
 if [[ $DEBUG == 1 ]]; then echo "DEBUG: IEAM script EXIT"; fi
+
+pkill java

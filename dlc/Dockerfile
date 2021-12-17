@@ -50,13 +50,20 @@ RUN rm -rf /opt/ibm/si/services/dlc/conf/logSources.json
 RUN touch /opt/ibm/si/services/dlc/conf/logSources.json
 #IEAM Integration
 COPY dlc_ieam.sh /root/dlc_ieam.sh
+COPY dlc_start.sh /dlc_start.sh
 EXPOSE 1514/tcp
 EXPOSE 1514/udp
 VOLUME /store/persistent_queue
 RUN chmod +x /root/dlc_setup.sh /root/dlc_config.sh
 #IEAM Integration
 RUN chmod +x /root/dlc_ieam.sh
+RUN chmod +x /dlc_start.sh
+RUN chown dlc:dlc /dlc_start.sh
 #IEAM Integration
 COPY dlc_ieam_trigger_mms.sh /root/dlc_ieam_trigger_mms.sh
 RUN chmod +x /root/dlc_ieam_trigger_mms.sh
-CMD /root/dlc_setup.sh -m ${DLC_DESTINATION_MODE} -i ${DLC_DESTINATION_IP} -p ${DLC_DESTINATION_PORT} && "/sbin/init"
+#COPY dlc_ieam_trigger_mms.service /usr/lib/systemd/system/dlc_ieam_trigger_mms.service
+#CMD /root/dlc_setup.sh -m ${DLC_DESTINATION_MODE} -i ${DLC_DESTINATION_IP} -p ${DLC_DESTINATION_PORT} && "/sbin/init"
+#CMD /root/dlc_setup.sh -m ${DLC_DESTINATION_MODE} -i ${DLC_DESTINATION_IP} -p ${DLC_DESTINATION_PORT} && "/dlc_start.sh"
+RUN /root/dlc_setup.sh -m ${DLC_DESTINATION_MODE} -i ${DLC_DESTINATION_IP} -p ${DLC_DESTINATION_PORT} 
+CMD /dlc_start.sh

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 10
+
 # The type and name of the MMS file we are using
 OBJECT_ID="$HZN_DEVICE_ID.$SERVICE_NAME-deployment"
 OBJECT_TYPE="logsources.json"
@@ -20,11 +22,10 @@ BASEURL="https://localhost/api/v1/objects"
 DEBUG=1
 
 echo "Listen for logsources.json changes"
+sleep 15
 LOGSOURCES="/dlcInstance/logsources.json"
 
 RC=-1
-i=0
-
 while (($RC != 0)); do
 
 	# See if there is a new version of the config.json file
@@ -93,10 +94,10 @@ while (($RC != 0)); do
  		if [[ $DEBUG == 1 ]]; then echo "DEBUG: WAIT LOG SOURCES"; fi	
 		sleep 5
 
-		((i=i+1))
-		if [[ $i > 6 ]]; then RC=0; fi
 	fi
 
 done
 
 if [[ $DEBUG == 1 ]]; then echo "DEBUG: RELOAD DLC.SERVICE"; fi
+
+pkill java
